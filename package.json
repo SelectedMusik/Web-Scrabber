@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "echo 'Static site - open index.html in browser'",
-    "build": "echo 'Build completed - static site ready'",
+    "build": "mkdir -p public && cp -f index.html styles.css script.js api-mock.js public/ || (if not exist public mkdir public && copy index.html public\ && copy styles.css public\ && copy script.js public\ && copy api-mock.js public\)",
     "dev": "python demo_server.py"
   },
   "dependencies": {},
