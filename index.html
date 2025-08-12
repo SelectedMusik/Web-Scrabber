@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页爬虫工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" fill="#007AFF" stroke="#007AFF" stroke-width="2"/>
+                        <path d="M12 16L14.5 18.5L20 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>网页爬虫</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-secondary" id="helpBtn">帮助</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- URL输入区域 -->
+            <section class="url-section">
+                <div class="section-header">
+                    <h2>输入目标网页</h2>
+                    <p>请输入您想要爬取的网页地址</p>
+                </div>
+                <div class="url-input-container">
+                    <div class="input-group">
+                        <input type="url" id="urlInput" placeholder="https://example.com" class="url-input">
+                        <button id="previewBtn" class="btn-primary">预览网页</button>
+                    </div>
+                    <div class="input-hint">请输入完整的网页地址，包含 http:// 或 https://</div>
+                    <div id="urlError" class="error-message"></div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section class="content-section">
+                <div class="content-grid">
+                    <!-- 左侧：选择设置 -->
+                    <div class="selection-panel">
+                        <div class="panel-header">
+                            <h3>选择内容</h3>
+                            <p>在右侧预览中选择要爬取的内容</p>
+                        </div>
+                        
+                        <div class="selection-list" id="selectionList">
+                            <div class="empty-state">
+                                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                    <circle cx="24" cy="24" r="20" stroke="#C7C7CC" stroke-width="2" stroke-dasharray="4 4"/>
+                                    <path d="M24 16V32M16 24H32" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <p>暂无选择的内容</p>
+                                <span>在右侧预览中点击元素来选择</span>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button id="clearSelections" class="btn-secondary" disabled>清空选择</button>
+                            <button id="startScraping" class="btn-primary" disabled>开始爬取</button>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：网页预览 -->
+                    <div class="preview-panel">
+                        <div class="panel-header">
+                            <h3>网页预览</h3>
+                            <div class="preview-controls">
+                                <button id="refreshPreview" class="btn-icon" disabled>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M13.65 2.35C12.2 0.9 10.2 0 8 0C3.58 0 0 3.58 0 8H2C2 4.69 4.69 2 8 2C9.57 2 10.98 2.62 12.02 3.64L10 5.66H16V0L13.65 2.35Z" fill="currentColor"/>
+                                        <path d="M14 8C14 11.31 11.31 14 8 14C6.43 14 5.02 13.38 3.98 12.36L6 10.34H0V16L2.35 13.65C3.8 15.1 5.8 16 8 16C12.42 16 16 12.42 16 8H14Z" fill="currentColor"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="preview-container" id="previewContainer">
+                            <div class="preview-placeholder">
+                                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                                    <rect x="8" y="12" width="48" height="36" rx="4" stroke="#C7C7CC" stroke-width="2" fill="none"/>
+                                    <rect x="12" y="16" width="16" height="2" fill="#C7C7CC"/>
+                                    <rect x="12" y="20" width="24" height="2" fill="#C7C7CC"/>
+                                    <rect x="12" y="24" width="20" height="2" fill="#C7C7CC"/>
+                                    <rect x="40" y="16" width="12" height="12" rx="2" fill="#C7C7CC"/>
+                                    <circle cx="8" cy="8" r="3" fill="#FF3B30"/>
+                                    <circle cx="16" cy="8" r="3" fill="#FF9500"/>
+                                    <circle cx="24" cy="8" r="3" fill="#30D158"/>
+                                </svg>
+                                <h4>等待预览</h4>
+                                <p>输入网页地址并点击预览按钮</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 结果模态框 -->
+        <div id="resultModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>爬取结果</h3>
+                    <button class="modal-close" id="closeModal">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body" id="resultContent">
+                    <!-- 结果内容将在这里显示 -->
+                </div>
+                <div class="modal-footer">
+                    <button id="downloadCSV" class="btn-primary">下载 CSV</button>
+                    <button id="downloadJSON" class="btn-secondary">下载 JSON</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 加载指示器 -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>正在处理中...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 选择元素命名模态框 -->
+    <div id="nameModal" class="modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3>为选择的内容命名</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="elementName">名称</label>
+                    <input type="text" id="elementName" placeholder="例如：产品价格" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="elementType">类型</label>
+                    <select id="elementType" class="form-select">
+                        <option value="text">文本</option>
+                        <option value="image">图片</option>
+                        <option value="link">链接</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelName" class="btn-secondary">取消</button>
+                <button id="confirmName" class="btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="api-mock.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

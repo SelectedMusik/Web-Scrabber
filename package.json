@@ -1,0 +1,24 @@
+{
+  "name": "web-scraper-app",
+  "version": "1.0.0",
+  "description": "一款简洁直观的网页爬虫工具，采用苹果风格设计",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Static site - open index.html in browser'",
+    "build": "echo 'Build completed - static site ready'",
+    "dev": "python demo_server.py"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [
+    "web-scraper",
+    "crawler",
+    "data-extraction",
+    "static-site"
+  ],
+  "author": "Web Scraper Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.x"
+  }
+}
